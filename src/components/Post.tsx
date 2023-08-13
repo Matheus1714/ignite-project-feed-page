@@ -1,27 +1,26 @@
 import { useState, FormEvent, ChangeEvent, InvalidEvent } from 'react'
-import { Avatar } from './Avatar'
-import { Comment } from './Comment'
 import styles from './Post.module.css'
+import { Author } from './Author'
+import { Content } from './Content'
+import { FormComment } from './FormComment'
+import { CommentList } from './CommentList'
 
-import { format, formatDistanceToNow } from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
-
-interface Author{
+export interface AuthorType{
     name: string
     role: string
     avatarUrl: string
 }
 
-interface Content{
+export interface ContentType{
     type: 'paragraph' | 'link'
     content: string
 }
 
 export interface PostType{
     id: number
-    author: Author
+    author: AuthorType
     publishedAt: Date
-    content: Content[]
+    content: ContentType[]
 }
 
 interface PostProps{
@@ -32,15 +31,7 @@ export function Post({ post }: PostProps){
     const [ comments, setComments ] = useState<string[]>([])
     const [ newCommentText, setNewCommentText ] = useState<string>('')
 
-    const publishedDateFormatted = format(post.publishedAt, "d 'de' LLLL 'às' HH:mm'h'",{
-        locale:ptBR
-    })
-    const publishedDateRelativeToNow = formatDistanceToNow(post.publishedAt, {
-        locale:ptBR,
-        addSuffix:true
-    })
-
-    function handleCreareNewComment(event: FormEvent){
+    function handleCreateNewComment(event: FormEvent){
         event.preventDefault()
         setComments([...comments, newCommentText])
         setNewCommentText('')
@@ -59,63 +50,28 @@ export function Post({ post }: PostProps){
         })
         setComments(commentsWithoutDeleteOne)
     }
-
-    const isNewCommentEmpty = newCommentText.length === 0
     
     return (
         <article className={styles.post}>
-            <header>
-                <div className={styles.author}>
-                    <Avatar src={post.author.avatarUrl}/>
-                    <div className={styles.authorInfo}>
-                        <strong>{post.author.name}</strong>
-                        <span>{post.author.role}</span>
-                    </div>
-                </div>
-                <time title={publishedDateFormatted} dateTime={post.publishedAt.toString()}>
-                    {publishedDateRelativeToNow}
-                </time>
-            </header>
+            <Author 
+                author={post.author}
+                publishedAt={post.publishedAt}
+            />
+            <Content
+                content={post.content}
+            />
 
-            <div className={styles.content}>
-                {post.content.map(line => {
-                    if(line.type === 'paragraph'){
-                        return <p key={line.content}>{line.content}</p>
-                    }else if(line.type === 'link'){
-                        return <p key={line.content}><a href="#">{line.content}</a></p>
-                    }
-                })}
-            </div>
+            <FormComment 
+                handleCreateNewComment = {handleCreateNewComment}
+                handleNewCommentChange = {handleNewCommentChange}
+                handleNewCommentInvalid = {handleNewCommentInvalid}
+                newCommentText = {newCommentText}
+            />
 
-            <form onSubmit={handleCreareNewComment} className={styles.commentForm}>
-                <strong>Deixe o seu feedback</strong>
-                <textarea
-                    name="comment"
-                    placeholder='Deixe um comentário'
-                    onChange={handleNewCommentChange}
-                    value={newCommentText}
-                    required
-                    onInvalid={handleNewCommentInvalid}
-                />
-
-                <footer>
-                    <button disabled={isNewCommentEmpty} type='submit'>
-                        Publicar
-                    </button>
-                </footer>
-            </form>
-
-            <div className={styles.commentList}>
-                {comments.map(comment => {
-                    return (
-                        <Comment 
-                            onDeleteComment={deleteComment} 
-                            key={comment} 
-                            content={comment} 
-                        />
-                    )
-                })}
-            </div>
+            <CommentList
+                comments = {comments}
+                deleteComment={deleteComment}
+            />
         </article>
     )
 }
