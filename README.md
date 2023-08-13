@@ -1,5 +1,9 @@
 # Ignite Project Feed Page
 
+![project-01](img/animation.gif)
+
+This is a project created using the concepts learned in Rocketseat's classes in the Ignite program for a comments feed.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
