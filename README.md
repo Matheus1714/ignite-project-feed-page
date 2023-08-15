@@ -37,6 +37,22 @@ The project dependencies were:
   }
 ```
 
+## Run Project
+
+Run the installation of dependencies with:
+
+```shell
+npm i
+```
+
+Run the exe project using the command:
+
+```shell
+npm run dev
+```
+
+😝 Enjoy!!
+
 ## What I Learned with This Project?
 
 ### Create a global file to CSS
