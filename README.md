@@ -6,7 +6,7 @@ This is a project created using the concepts learned in [Rocketseat's](https://w
 
 ## Design
 
-This Front-end project was developed based on the design proposed in Figma.
+This Front-end project was developed based on the design proposed in [Figma](https://www.figma.com/file/QUu1Ge0qogrBEN95ov77Mg/Ignite-Feed-(Community)?type=design&node-id=0%3A1&mode=design&t=XSHWfaJ2thJ4E1tE-1).
 
 ![](img/Figma.gif)
 
